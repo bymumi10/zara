@@ -2,10 +2,11 @@ name: Zara Stok Kontrolü
 
 on:
   schedule:
-    # Bu cron job her dakika çalışır.
-    - cron: '*/1 * * * *'
-  workflow_dispatch: # Manuel olarak çalıştırma imkanı için
+    # Bu cron job, GitHub'da en güvenilir zamanlama olan her 5 dakikada bir çalışır.
+    - cron: '*/5 * * * *'
+  workflow_dispatch: # Manuel olarak çalıştırma butonu için
 
+# İş akışının depoya dosya yazma iznini (git push) tanımlar.
 permissions:
   contents: write
 
@@ -14,19 +15,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Adım: Depodaki kodları kopyalar.
       - name: Depoyu Kopyala
         uses: actions/checkout@v4
 
+      # 2. Adım: Python'un belirtilen sürümünü kurar.
       - name: Python'u Kur
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
+      # 3. Adım: Python için gerekli kütüphaneleri yükler.
       - name: Gerekli Kütüphaneleri Yükle
         run: |
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4
 
+      # 4. Adım: Stok kontrolü yapan Python betiğini çalıştırır.
       - name: Stok Kontrol Betiğini Çalıştır
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -34,11 +39,12 @@ jobs:
         run: |
           python zara_stok_takibi.py
       
+      # 5. Adım: Değişen stok durumu dosyasını depoya kaydeder.
       - name: Değişiklikleri Depoya Kaydet
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add stok_durumu.txt
-          # Sadece değişiklik varsa commit at
+          # Sadece gerçekten bir değişiklik varsa commit atar ve push'lar.
           git diff --staged --quiet || git commit -m "Stok durumu güncellendi"
           git push

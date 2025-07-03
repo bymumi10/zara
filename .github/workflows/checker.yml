@@ -44,6 +44,10 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          # --- YENİ EKLENEN SATIR ---
+          # Göndermeden önce sunucudaki olası yeni değişiklikleri çek.
+          git pull
+          # -------------------------
           git add stok_durumu.txt
           # Sadece gerçekten bir değişiklik varsa commit atar ve push'lar.
           git diff --staged --quiet || git commit -m "Stok durumu güncellendi"

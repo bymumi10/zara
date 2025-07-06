@@ -9,7 +9,7 @@ TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')
 TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID')
 
 # !!! SADECE BU SATIRI KENDİ ÜRÜN LİNKİNİZLE DEĞİŞTİRİN !!!
-ZARA_URUN_URL = 'https://www.zara.com/tr/tr/ornek-urun-linki-p12345678.html'
+ZARA_URUN_URL = 'https://www.zara.com/tr/tr/uzun-sisme-yelek-p03046230.html'
 
 # Tarayıcı bilgisi
 HEADERS = {
